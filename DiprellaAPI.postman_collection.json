@@ -1,0 +1,1635 @@
+{
+	"info": {
+		"_postman_id": "bf628f67-cd4c-4020-abdb-83ccdcc59c7b",
+		"name": "Diprella API ",
+		"description": "https://documenter.getpostman.com/view/2050212/SVfUt7VZ?version=latest#intro\nhttps://demo-company.diprella.com/#/",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "authorization",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "27527c61-3ae6-4f26-9e01-51d52216c802",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"token\", jsonData.token);",
+									"pm.environment.set(\"admin-profile\", jsonData.part_email);",
+									"",
+									"",
+									"pm.test(\"URL value check\", function () {",
+									" var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.url).to.eql(\"test1\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "88ce0724-899f-4f98-a556-16d2b7cf5f00",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\":\"admin_company@mail.com\",\n\t\"password\":\"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lector Sign up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "001e9512-3bf4-480c-8974-663fd744ac5d",
+								"exec": [
+									"//DEFINE VARIABLES",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"lector-token\", jsonData.token);",
+									"pm.environment.set(\"lector-name\", jsonData.part_email);",
+									"pm.environment.set(\"lector-username\", jsonData.email);",
+									"pm.environment.set(\"lector-password\", jsonData.part_email);",
+									"pm.environment.set(\"lector-id\", jsonData.id);",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "text/plain",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "John",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Johnson",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "lector.{{$randomInt}}@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "lector.{{$randomInt}}",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "lector.{{$randomInt}}",
+									"type": "text"
+								},
+								{
+									"key": "terms",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/sign_up",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sign_up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/password/send/reset?email=naviot88@gmail.com&password=123456&password_confirmation=123456",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"password",
+								"send",
+								"reset"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "naviot88@gmail.com"
+								},
+								{
+									"key": "password",
+									"value": "123456"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "123456"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "208a4354-89bf-418f-b22e-4e2c69b1c607",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ade51e07-1bbd-492a-a5ee-5231f736ee7a",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							" });",
+							"",
+							"pm.test(\"Response returns in JSON format\", function () {",
+							"   var jsonData = pm.response.to.be.json;",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "profile",
+			"item": [
+				{
+					"name": "Get profile by url",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "064d32dd-faf1-4fa6-91fe-f762aca4ec16",
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(1);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/profile/link/{{admin-profile}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"profile",
+								"link",
+								"{{admin-profile}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile statistic",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e0681290-5edc-434f-beaf-5e76c2a223e6",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/profile/statistic/{{admin-profile}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"profile",
+								"statistic",
+								"{{admin-profile}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get course list progress",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bacd10ae-94dc-4c03-85dc-7531000f767c",
+								"exec": [
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"path\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/profile/course/progress",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"profile",
+								"course",
+								"progress"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile learning course",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3b5dda8b-d055-4216-9119-342adcb08071",
+								"exec": [
+									"pm.test(\"Response time is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/profile/learning/list?url={{admin-profile}}&complected=true",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"profile",
+								"learning",
+								"list"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "{{admin-profile}}"
+								},
+								{
+									"key": "complected",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fdd7f671-1912-4cb3-983b-766de297c779",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "bd59a36a-1c2d-4fb7-8ac6-89372e4fd91a",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Response returns in JSON format\", function () {",
+							"    var jsonData = pm.response.to.be.json;",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "administration",
+			"item": [
+				{
+					"name": "company",
+					"item": [
+						{
+							"name": "getCompany",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "fbe60a26-11f6-426f-b47a-212d351e9953",
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.id).to.eql(1);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/company/get?url=",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"company",
+										"get"
+									],
+									"query": [
+										{
+											"key": "url",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get categories to header",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/company/category/header/list",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"company",
+										"category",
+										"header",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Company course list",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "26ac5455-11cf-4b13-bdf0-be4f5c9954ea",
+										"exec": [
+											"pm.test(\"Status code name has string\", function () {",
+											"    pm.response.to.have.status(\"OK\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/company/course/list?id=1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"company",
+										"course",
+										"list"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get style company",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "98240f63-9f4b-4135-ba83-0605b23f0c1e",
+										"exec": [
+											"pm.test(\"Status code name has string\", function () {",
+											"    pm.response.to.have.status(\"OK\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/company/style/get",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"company",
+										"style",
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Company",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9c95df73-6331-4124-a475-9d50c6b3a874",
+										"exec": [
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(true);",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"attributes\":{\n   \"name\":\"new1 company\",\n   \"logo_photo\":\"uploads/test/test.jpg\",\n   \"bk_photo\":\"uploads/test/test.jpg\",\n   \"headline\":\"this is test company\",\n   \"language\": \"en\",\n   \"email\": \"test@main.net\",\n   \"public\": true,\n   \"site\":\"https://google.com\",\n   \"location\":\"445 Mount Eden Road, Mount Eden, Auckland.\",\n   \"description\": \"AMC Bridge – це компанія, заснована досвідченими спеціалістами у галузі інформаційних технологій, що надає рішення для систем автоматизованого проектування, конструювання та виробництва, а також систем управління даними щодо продукту, та керування його життєвим циклом. Надаючи якісний сервіс багатьом компаніям з усього світу вже більш ніж 15 років, ми віримо, що саме налагодження довгострокових відносин з клієнтами та партнерами – один з головних принципів роботи AMC Bridge - допомагає досягати найкращих результатів у проектах будь-якої сфери та ступеню складності.\"\n  }\n  \n}"
+								},
+								"url": {
+									"raw": "{{url}}/company/settings/update",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"company",
+										"settings",
+										"update"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6ac0d68a-5f09-4819-b328-1c11f0b37e6e",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "0e26d9f7-d618-4534-bd6b-93d18be25f1d",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+									"});",
+									"",
+									"pm.test(\"Response returns in JSON format\", function () {",
+									"    var jsonData = pm.response.to.be.json;",
+									"});"
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f6df6d8c-edd4-4bff-b19b-b526ee118dc8",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "10cd5825-0439-4bc4-94de-34b6bbabed55",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "course",
+			"item": [
+				{
+					"name": "step1 Create Course",
+					"item": [
+						{
+							"name": "Upload course cover",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ab27b24d-7734-4839-976f-b4dec202a171",
+										"exec": [
+											"pm.test(\"Response returns in JSON format\", function () {",
+											"    var jsonData = pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"Body matches string\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"image\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "logo.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/image/upload",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"image",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload course trailer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b8934257-0588-4450-bb7e-575665e17a97",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept-language",
+										"value": "en"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "file_example_MP4_480_1_5MG.mp4"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/video/upload",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"video",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bdc11e23-761e-42db-a1c4-0cdc0a836ac6",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\":\"TestIryna\",\n\t\"parent_id\":9\n}"
+								},
+								"url": {
+									"raw": "{{url}}/company/category/create",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"company",
+										"category",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a course",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a429d741-3cb2-4f8f-a87e-c0c3084af310",
+										"exec": [
+											"",
+											"var jsonData = pm.response.json();",
+											"",
+											"pm.environment.set(\"course_id\", jsonData.id);",
+											"",
+											"pm.test(\"Responce body should have property\", function () {",
+											"    pm.expect(jsonData).to.have.property(\"id\").and.not.null;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"industry_id\":[],\n\t\"industries\":[],\n\t\"categories_id\":[1,12],\n\t\"category\":[\n\t\t{\"id\":1,\n\t\t\"name\":\"Тест\"\n\t\t},\n\t\t{\"id\":12,\n\t\t\"name\":\"TesT\"\n\t\t\t\n\t\t}],\n\t\t\"title\":\"Course Iryna1\",\n\t\t\"privacy\":\"private\",\n\t\t\"level\":\"advanced\",\n\t\t\"lang\":\"English\",\n\t\t\"description\":\"<p>hello here,</p><p>this is a course</p>\",\n\t\t\"video_cover\":\"https://s88-bucket.s3.us-west-2.amazonaws.com/docs/c4/1/3hLx94gF\",\n\t\t\"thumb_image\":\"https://s88-bucket.s3.us-west-2.amazonaws.com/docs/c4/1/thumb/nJjJ4zoF\",\n\t\t\"video_thumb\":\"https://s88-bucket.s3.us-west-2.amazonaws.com/docs/c4/1/thumb/3hLx94gF\",\n\t\t\"image\":\"https://s88-bucket.s3.us-west-2.amazonaws.com/docs/c4/1/nJjJ4zoF\",\n\t\t\"id\":null,\n\t\t\"owner_type\":\"company\"\n\t\n}"
+								},
+								"url": {
+									"raw": "{{url}}/course/create",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"course",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Getting Public Course Modules list",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "18d4cf1e-eec3-4595-a201-943cf77fff1a",
+										"exec": [
+											"//VARIABLES",
+											"var jsonData = pm.response.json();",
+											"pm.environment.set(\"last-added-module-id\", [jsonData.modules.length-1].id);",
+											"",
+											"//TESTS",
+											" pm.test(\"Check if Modules is an array and is not empty\", function () {",
+											"    pm.expect(jsonData.modules).to.be.an('array').and.not.empty;",
+											" });",
+											" ",
+											" pm.test(\"Newly created Module id is an array and is not empty\", function(){",
+											"    pm.expect(pm.environment.get(\"public-cousr-newly-module-id\")).not.to.beoneOf(pm.environment.get(\"modulesIDs\")); ",
+											" });",
+											" ",
+											" pm.test(\"Your test name\", function () {",
+											"    pm.expect(pm.environment.get(\"public-course-modules-count\")).to.eql(JSON.stringify(jsonData.modules.length-1));",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "bfc5eb5b-e4d0-4a38-8fff-16b68223b7a9",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{lector-token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/course/module/list?course_id={{course_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"course",
+										"module",
+										"list"
+									],
+									"query": [
+										{
+											"key": "course_id",
+											"value": "{{course_id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e82eb0e4-1756-4137-a62f-fb63348ecd51",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "feacb7ec-9cef-46f3-8b32-d8929a2fe287",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "step2 Fill Course",
+					"item": [
+						{
+							"name": "Create Lecture Article",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "10aef28b-8f80-42d2-a643-b2bd08ec70a5",
+										"exec": [
+											"//VARIABLES",
+											"var jsonData = pm.response.json();",
+											"",
+											"pm.environment.set(\"article_id\", jsonData.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/javascript",
+										"type": "text"
+									},
+									{
+										"key": "title",
+										"value": "My Article title",
+										"type": "text"
+									},
+									{
+										"key": "expected_time",
+										"value": "1200",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"title\":\"test\",\n\t\"description\":\"\",\n\t\"article\":\"test\",\n\t\"type\":\"article\",\n\t\"presentation\":\"\",\n\t\"expected_time\":2400,\n\t\"hours\":0,\n\t\"minutes\":\"40\",\n\t\"module_id\":\"{{module_id}}\",\n\t\"course_id\":\"{{course_id}}\",\n\t\"id\":null,\n\t\"files_id\":[1],\n\t\"answer\":0\n}"
+								},
+								"url": {
+									"raw": "{{url}}/article/create",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"article",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload image for webinar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ddacc5d7-7b40-4234-936f-d69e36cfc577",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "logo.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/image/upload",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"image",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload file for webinar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "3d41ad2f-a914-4853-a101-f9cd629ddab1",
+										"exec": [
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "Saryicheva_L._Novyie_Pravila_Delovoyi_P.a4 копія.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/files/upload",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"files",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Webinar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "c8deb7d6-4b34-492f-b89f-690f43b33d29",
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"id\":null,\n\t\"course_id\":\"{{course_id}}\",\n\t\"module_id\":\"{{module_id}}\",\n\t\"title\":\"Webinar one\",\n\t\"timezone\":\"UTC +03:00\",\n\t\"default_time_zone\":null,\n\t\"type\":\"webinar\",\n\t\"description\":\"<p>This is a test webinar</p>\",\n\t\"date_from\":\"2019-09-13\",\n\t\"start_time\":\"10:20:00\",\n\t\"duration\":4500,\n\t\"duration_value\":\"01:15:00\",\n\t\"chat\":1,\n\t\"max_viewers\":15,\n\t\"files_id\":[{\"id\":15,\n\t\"name\":\"software-testing2.pdf\",\n\t\"type\":\"private\",\n\t\"link\":\"https://s88-bucket.s3.us-west-2.amazonaws.com/docs/c4/1/CaXaMoVZ.pdf\",\n\t\"mime\":\"application/pdf\"}],\n\t\"image_cover\":\"https://s88-bucket.s3.us-west-2.amazonaws.com/docs/c4/1/jbriwc7x\",\n\t\"timezone_region\":\"Europe/Kiev\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/event/create",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"event",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Quiz",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e7cb2f84-5da7-45ae-ac76-62b89a78586e",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"course_id\": \"{{course_id}}\",\n  \"module_id\": \"{{module_id}}\",\n  \"id\": null,\n  \"title\": \"Test\",\n  \"date_from\": \"2019-09-16\",\n  \"initialDate\": \"2019-09-16T15:58:01.778Z\",\n  \"question\": [\n    {\n      \"name\": \"How are you?\",\n      \"points\": 4,\n      \"answer_count\": 1,\n      \"question_type\": \"open\",\n      \"open\": [\n        {\n          \"text\": \"OKAY\",\n          \"correct\": false,\n          \"answer_letter\": null\n        }\n      ],\n      \"normal\": []\n    },\n    {\n      \"name\": \"Where are you now>\",\n      \"points\": 6,\n      \"answer_count\": 1,\n      \"question_type\": \"normal\",\n      \"open\": [],\n      \"normal\": [\n        {\n          \"text\": \"Here\",\n          \"correct\": false,\n          \"answer_letter\": \"a\"\n        },\n        {\n          \"text\": \"In the middle of nowhere\",\n          \"correct\": false,\n          \"answer_letter\": \"b\"\n        },\n        {\n          \"text\": \"There\",\n          \"correct\": true,\n          \"answer_letter\": \"c\"\n        }\n      ]\n    }\n  ],\n  \"question_id\": [],\n  \"difficulty\": \"advanced\",\n  \"detailed_result\": 1,\n  \"time_limit\": 1200,\n  \"attempts\": 2,\n  \"order_question\": \"normal\",\n  \"point\": 8,\n  \"hours\": \"00\",\n  \"minutes\": \"20\",\n  \"q_point\": 10,\n  \"description\": \"<p>test</p>\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/quiz/create",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"quiz",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create module",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e4ca111f-7d25-4a6d-8233-cf872a09ab14",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"",
+											"pm.environment.set(\"module_id\", jsonData.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"course_id\": \"{{course_id}}\",\n\t\"title\": \"Iryna module\",\n\t\"module_lessons\":[],\n\t\"description\":\"\",\n\t\"start_time\":0\n}"
+								},
+								"url": {
+									"raw": "{{url}}/course/module/create",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"course",
+										"module",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invite lecture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "43737810-0535-483b-9adb-00e1b8c75760",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"param_invite\": [\n    {\n      \"email\": \"naviot88@gmail.com\",\n      \"status\": 1,\n      \"course_id\": \"{{course_id}}\",\n      \"module_id\": \"{{module_id}}\",\n      \"event_id\": 25,\n      \"type\": \"article\"\n    }\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{url}}/course/invite/lecture",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"course",
+										"invite",
+										"lecture"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8a52ae4d-d7f3-42aa-8d75-f6bb16e26e8e",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "6bb7d1e1-ab56-4c7f-9f42-ee64b3646922",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "step3 Publich a course",
+					"item": [
+						{
+							"name": "Invite student",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"course_id\": \"{course_id}}\",\n  \"email\": \"diprella@gmail.com\",\n  \"status\": 1\n}"
+								},
+								"url": {
+									"raw": "{{url}}/user/invite/course",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"user",
+										"invite",
+										"course"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Publish course",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"course_id\": \"{{course_id}}\",\n  \"owner\": {\n    \"id\": 1,\n    \"avatar\": \"https://s88-bucket.s3.us-west-2.amazonaws.com/docs/c4/1/M0cZWtbX\",\n    \"last_name\": \"Wick\",\n    \"first_name\": \"Jonh\"\n  },\n  \"type\": \"free\",\n  \"time_zone\": \"UTC +03:00\",\n  \"time_zone_value\": {\n    \"value\": \"UTC +03:00\",\n    \"label\": \"(UTC+03:00)Europe/Kiev\"\n  },\n  \"end_date\": \"unlimited\",\n  \"currency\": \"USD\",\n  \"cert\": false,\n  \"lecture_chat\": true,\n  \"start_date\": \"2019-10-01\",\n  \"publish\": true\n}"
+								},
+								"url": {
+									"raw": "{{url}}/course/settings",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"course",
+										"settings"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "963538ff-770d-4669-ace2-f00a8418102b",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "db605179-d044-40b4-87fe-92ca98dfa210",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "94881412-b325-4bb0-ae6c-77b34929d9f6",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "77841426-0dc3-4596-9440-69dd2589f5fc",
+						"type": "text/javascript",
+						"exec": [
+							"//pm.test(\"Successful POST request\", function () {",
+							"//    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"// });",
+							"",
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "d5ad68e7-46aa-4359-b58f-611eff3cdebe",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6318066e-d889-4b22-830d-62d159171294",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
